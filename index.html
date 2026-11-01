@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PrepPilot</title>
+<meta name="description" content="PrepPilot is a bilingual exam-prep app for Indian competitive exams: answers that show their sources, real-pattern mock tests, past papers and notes.">
+<meta property="og:title" content="PrepPilot">
+<meta property="og:description" content="Exam prep in Hindi and English. Every answer shows the page it came from.">
+<meta property="og:image" content="https://pushkarsingh0074.github.io/preppilot/assets/ask.png">
+<meta name="theme-color" content="#0e0f11">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235a62e4'/%3E%3Cpath d='M8 16.6 23.5 9l-4.2 14.6-4.1-4.6-3.6 2.4.6-4.6z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<canvas id="glyphs" aria-hidden="true"></canvas>
+<a class="skip" href="#main" data-t="skip">Skip to content</a>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="PrepPilot">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--accent)"/><path d="M8 16.6 23.5 9l-4.2 14.6-4.1-4.6-3.6 2.4.6-4.6z" fill="#fff"/></svg>
+      <span>Prep<b>Pilot</b></span>
+    </a>
+    <nav class="links" aria-label="Sections">
+      <a href="#ask" data-t="navAsk">Ask</a>
+      <a href="#exam" data-t="navExam">Mock test</a>
+      <a href="#topics" data-t="navTopics">Past papers</a>
+      <a href="#built" data-t="navBuilt">How it works</a>
+    </nav>
+    <div class="tools">
+      <button id="lang" class="ghost" type="button" aria-label="Switch language">हिंदी</button>
+      <button id="theme" class="ghost icon" type="button" aria-label="Switch theme">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z"/></svg>
+      </button>
+      <a class="btn small" href="https://preppilot-henna.vercel.app" data-t="open">Open app</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section id="top" class="hero wrap">
+    <p class="eyebrow" data-t="eyebrow">For Indian competitive exams</p>
+    <h1 data-t="h1">Study from official sources, in Hindi or English.</h1>
+    <p class="lead" data-t="lead">PrepPilot brings past papers, notes, mock tests and a study plan into one calm place. Ask a doubt and the answer shows the page it came from. If the notes don't cover it, it says so instead of guessing.</p>
+    <div class="cta">
+      <a class="btn" href="https://preppilot-henna.vercel.app" data-t="cta">Try PrepPilot live</a>
+      <a class="btn alt" href="#ask" data-t="cta2">See how it works</a>
+    </div>
+    <p class="note" data-t="wake">Runs on a free server, so the first visit can take up to a minute to wake.</p>
+    <dl class="stats">
+      <div><dt>30</dt><dd data-t="s1">exams set up from official notifications</dd></div>
+      <div><dt>2,183</dt><dd data-t="s2">syllabus topics</dd></div>
+      <div><dt>780</dt><dd data-t="s3">GATE CS past-paper questions</dd></div>
+      <div><dt>2</dt><dd data-t="s4">languages, Hindi and English</dd></div>
+    </dl>
+    <p class="hint" data-t="ripple">Click anywhere on the page. The maths ripples.</p>
+  </section>
+
+  <section id="ask" class="band">
+    <div class="wrap two">
+      <div>
+        <p class="eyebrow" data-t="askEye">Ask</p>
+        <h2 data-t="askH">Answers you can check</h2>
+        <p data-t="askP">The tutor answers only from your notes, the shared library and official papers. Pick a question to see what happens, then tap the source.</p>
+        <div class="chips" id="askChips"></div>
+        <p class="note" data-t="askNote">Saved sample answers. The live app writes them in real time.</p>
+      </div>
+      <div class="panel chat" aria-live="polite">
+        <div class="bubble me" id="askQ"></div>
+        <div class="bubble bot" id="askA"></div>
+        <div id="askSrc"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="exam" class="band">
+    <div class="wrap">
+      <p class="eyebrow" data-t="exEye">Mock test</p>
+      <h2 data-t="exH">Practise on the real exam screen</h2>
+      <p class="sub" data-t="exP">A timer, a question palette, mark for review and negative marking, the same way the computer-based exam works. Try this short test.</p>
+      <div class="panel cbt">
+        <div class="cbt-main">
+          <div class="cbt-top"><strong id="qNo"></strong><span class="pill" id="qMark"></span><span class="timer" id="timer">05:00</span></div>
+          <p class="stem" id="qText"></p>
+          <div id="qOpts" class="opts" role="radiogroup"></div>
+          <div class="cbt-btns">
+            <button class="btn alt small" id="qReview" type="button" data-t="review">Mark for review</button>
+            <button class="btn alt small" id="qClear" type="button" data-t="clear">Clear</button>
+            <button class="btn small" id="qNext" type="button" data-t="next">Save and next</button>
+          </div>
+        </div>
+        <aside class="cbt-side">
+          <p class="side-h" data-t="palette">Question palette</p>
+          <div id="palette" class="pal"></div>
+          <ul class="legend">
+            <li><i class="dot ans"></i><span data-t="lgA">Answered</span></li>
+            <li><i class="dot rev"></i><span data-t="lgR">For review</span></li>
+            <li><i class="dot"></i><span data-t="lgN">Not answered</span></li>
+          </ul>
+          <button class="btn small full" id="qSubmit" type="button" data-t="submit">Submit test</button>
+          <p id="score" class="score" role="status"></p>
+        </aside>
+      </div>
+      <p class="note" data-t="exNote">Sample questions written for this page. The app uses full official papers.</p>
+    </div>
+  </section>
+
+  <section id="topics" class="band">
+    <div class="wrap">
+      <p class="eyebrow" data-t="tpEye">Past papers</p>
+      <h2 data-t="tpH">See where the marks really are</h2>
+      <p class="sub" data-t="tpP">PrepPilot tags every past-paper question by topic, so you can decide what to study first. This chart uses the real numbers from 12 GATE CS papers, 2019 to 2026.</p>
+      <div class="panel chart">
+        <div class="years" id="years" role="group" aria-label="Year"></div>
+        <div id="bars" class="bars"></div>
+        <p class="note" data-t="tpNote">Marks out of 100 per paper. In years with two sessions, the two papers are averaged.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <p class="eyebrow" data-t="ftEye">Everything in one place</p>
+      <h2 data-t="ftH">Built for the whole preparation</h2>
+      <div class="grid" id="features"></div>
+      <div class="shots">
+        <figure><img src="assets/ask.png" alt="" width="1019" height="585" loading="lazy" data-alt="altAsk"><figcaption data-t="capAsk">Ask, showing the note an answer came from</figcaption></figure>
+        <figure><img src="assets/practice.png" alt="" width="1019" height="585" loading="lazy" data-alt="altPr"><figcaption data-t="capPr">Practice: papers, mocks, quizzes, mistakes and flashcards</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="built" class="band">
+    <div class="wrap">
+      <p class="eyebrow" data-t="bEye">How it works</p>
+      <h2 data-t="bH">What happens behind the page</h2>
+      <p class="sub" data-t="bP">Tap a part to see what it does.</p>
+      <div class="flow" id="flow" role="tablist" aria-label="Parts of the system"></div>
+      <div class="panel detail" id="flowDetail" role="tabpanel" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="band end">
+    <div class="wrap">
+      <h2 data-t="endH">Ready to try it?</h2>
+      <p class="sub" data-t="endP">Sign in with Google, pick your exam and start.</p>
+      <a class="btn" href="https://preppilot-henna.vercel.app" data-t="cta">Try PrepPilot live</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p data-t="f1">This repository holds the project page only. The application code is private.</p>
+    <p data-t="f2">Not affiliated with NTA, the IITs or any exam body. Official papers belong to their publishers. AI can make mistakes, so check the cited page.</p>
+    <p>&copy; 2026 <a href="https://github.com/PushkarSingh0074">Pushkar Singh</a>. <span data-t="f3">All rights reserved.</span></p>
+  </div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
